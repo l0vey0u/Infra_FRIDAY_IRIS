@@ -1,0 +1,17 @@
+[mysqld]
+# basic setting
+
+default_authentication_plugin=mysql_native_password
+# time zone : seoul
+default-time-zone='+9:00'
+# replication setting
+bind-address            = 0.0.0.0
+server-id               = 3
+log_bin                 = /var/run/mysqld/mysql-bin.log
+relay-log               = /var/run/mysqld/mysql-relay-bin.log
+binlog_do_db            = friday
+read_only = on
+
+gtid_mode                = on
+enforce_gtid_consistency = on
+log_slave_updates        = on

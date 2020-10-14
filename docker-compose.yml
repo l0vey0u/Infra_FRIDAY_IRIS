@@ -1,0 +1,55 @@
+services:
+    main_master:
+        image: mysql:8.0
+        container_name: main_master_db
+        networks:
+            - db_net
+        volumes:
+            - ./master/main-mysql.cnf:/etc/mysql/conf.d/mysql.cnf:ro
+            - ./master/main-init.sql:/docker-entrypoint-initdb.d/init.sql
+            - db_backup:/var/lib/mysql
+        restart: unless-stopped
+        environment: 
+            MYSQL_ROOT_PASSWORD: Iz0ne!!!!
+            MYSQL_DATABASE: friday
+            MYSQL_USER: main_master
+            MYSQL_PASSWORD: Iz0ne!!!!
+            TZ: Asia/Seoul
+    sub_master:
+        image: mysql:8.0
+        container_name: sub_master_db
+        networks:
+            - db_net
+        volumes:
+            - ./master/sub-mysql.cnf:/etc/mysql/conf.d/mysql.cnf:ro
+            - ./master/sub-init.sql:/docker-entrypoint-initdb.d/init.sql
+        restart: unless-stopped
+        environment: 
+            MYSQL_ROOT_PASSWORD: Iz0ne!!!!
+            MYSQL_DATABASE: friday
+            MYSQL_USER: sub_master
+            MYSQL_PASSWORD: Iz0ne!!!!
+            TZ: Asia/Seoul
+    slave:
+        image: mysql:8.0
+        container_name: slave_db
+        networks:
+            - db_net    
+        volumes:
+            - ./slave/mysql.cnf:/etc/mysql/conf.d/mysql.cnf:ro
+            - ./slave/init.sql:/docker-entrypoint-initdb.d/init.sql  
+        restart: unless-stopped 
+        environment: 
+            MYSQL_ROOT_PASSWORD: Iz0ne!!!!
+            MYSQL_DATABASE: friday
+            MYSQL_USER: slave
+            MYSQL_PASSWORD: Iz0ne!!!!
+            TZ: Asia/Seoul
+        depends_on:
+            - main_master  
+            - sub_master
+networks:
+    db_net:
+        driver: bridge
+volumes:
+    db_backup:
