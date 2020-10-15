@@ -3,9 +3,10 @@ services:
         image: mysql:8.0
         container_name: main_master_db
         networks:
-            - db_net
+            db_net:
+                ipv4_address: 172.20.1.3
         volumes:
-            - ./master/main-mysql.cnf:/etc/mysql/conf.d/mysql.cnf:ro
+            - ./master/main-mysql.cnf:/etc/mysql/conf.d/mysql.cnf
             - ./master/main-init.sql:/docker-entrypoint-initdb.d/init.sql
             - db_backup:/var/lib/mysql
         restart: unless-stopped
@@ -14,14 +15,16 @@ services:
             MYSQL_DATABASE: friday
             MYSQL_USER: main_master
             MYSQL_PASSWORD: Iz0ne!!!!
+            MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
             TZ: Asia/Seoul
     sub_master:
         image: mysql:8.0
         container_name: sub_master_db
         networks:
-            - db_net
+            db_net:
+                ipv4_address: 172.20.1.4
         volumes:
-            - ./master/sub-mysql.cnf:/etc/mysql/conf.d/mysql.cnf:ro
+            - ./master/sub-mysql.cnf:/etc/mysql/conf.d/mysql.cnf
             - ./master/sub-init.sql:/docker-entrypoint-initdb.d/init.sql
         restart: unless-stopped
         environment: 
@@ -29,27 +32,53 @@ services:
             MYSQL_DATABASE: friday
             MYSQL_USER: sub_master
             MYSQL_PASSWORD: Iz0ne!!!!
+            MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
             TZ: Asia/Seoul
     slave:
         image: mysql:8.0
         container_name: slave_db
         networks:
-            - db_net    
+            db_net:
+                ipv4_address: 172.20.1.5   
         volumes:
-            - ./slave/mysql.cnf:/etc/mysql/conf.d/mysql.cnf:ro
-            - ./slave/init.sql:/docker-entrypoint-initdb.d/init.sql  
+            - ./slave/mysql.cnf:/etc/mysql/conf.d/mysql.cnf
+            - ./slave/init.sql:/docker-entrypoint-initdb.d/init.sql
         restart: unless-stopped 
         environment: 
             MYSQL_ROOT_PASSWORD: Iz0ne!!!!
             MYSQL_DATABASE: friday
             MYSQL_USER: slave
             MYSQL_PASSWORD: Iz0ne!!!!
+            MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
             TZ: Asia/Seoul
         depends_on:
             - main_master  
             - sub_master
+        healthcheck:
+            test: ["CMD", 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'haproxy']
+            timeout: 20s
+            retries: 10
+    haproxy:
+        build:
+            context: ./haproxy
+            dockerfile: Dockerfile
+        container_name: haproxy
+        networks:
+            db_net:
+                ipv4_address: 172.20.1.2
+        restart: unless-stopped
+        ports:
+            - 8080:8080
+            - 3306:3306  # writable
+            - 3307:3307  # read only
+        depends_on:
+            slave:
+                condition: service_healthy
 networks:
     db_net:
-        driver: bridge
+        ipam:
+            config:
+                - subnet: 172.20.1.0/24
+                # haproxy 2, db 3~... for scale up
 volumes:
     db_backup:
