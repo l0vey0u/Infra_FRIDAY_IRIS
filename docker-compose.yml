@@ -1,13 +1,13 @@
 services:
     main_master:
-        image: mysql:8.0
+        build:
+            context: ./master
+            dockerfile: main_dockerfile
         container_name: main_master_db
         networks:
             db_net:
                 ipv4_address: 172.20.1.3
         volumes:
-            - ./master/main-mysql.cnf:/etc/mysql/conf.d/mysql.cnf
-            - ./master/main-init.sql:/docker-entrypoint-initdb.d/init.sql
             - db_backup:/var/lib/mysql
         restart: unless-stopped
         environment: 
@@ -18,14 +18,13 @@ services:
             MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
             TZ: Asia/Seoul
     sub_master:
-        image: mysql:8.0
+        build:
+            context: ./master
+            dockerfile: sub_dockerfile
         container_name: sub_master_db
         networks:
             db_net:
                 ipv4_address: 172.20.1.4
-        volumes:
-            - ./master/sub-mysql.cnf:/etc/mysql/conf.d/mysql.cnf
-            - ./master/sub-init.sql:/docker-entrypoint-initdb.d/init.sql
         restart: unless-stopped
         environment: 
             MYSQL_ROOT_PASSWORD: Iz0ne!!!!
@@ -35,14 +34,11 @@ services:
             MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
             TZ: Asia/Seoul
     slave:
-        image: mysql:8.0
+        build: ./slave
         container_name: slave_db
         networks:
             db_net:
-                ipv4_address: 172.20.1.5   
-        volumes:
-            - ./slave/mysql.cnf:/etc/mysql/conf.d/mysql.cnf
-            - ./slave/init.sql:/docker-entrypoint-initdb.d/init.sql
+                ipv4_address: 172.20.1.5
         restart: unless-stopped 
         environment: 
             MYSQL_ROOT_PASSWORD: Iz0ne!!!!
@@ -59,9 +55,7 @@ services:
             timeout: 20s
             retries: 10
     haproxy:
-        build:
-            context: ./haproxy
-            dockerfile: Dockerfile
+        build: ./haproxy
         container_name: haproxy
         networks:
             db_net:
