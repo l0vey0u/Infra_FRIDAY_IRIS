@@ -85,7 +85,7 @@ $ ./install_docker-compse.sh
 $ cd database
 $ docker-compose up -d --build
 # Load Database Scheme
-$ docker exec -i main_master_db mysql -u root -p Iz0ne!!!! < friday.sql
+$ docker exec -i main_master_db mysql -u root -pIz0ne!!!! friday < friday.sql
 ```
 
 ## Getting Started
