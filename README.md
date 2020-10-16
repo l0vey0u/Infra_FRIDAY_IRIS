@@ -55,6 +55,7 @@
 2. Docker Compose 미 설치시 해당 스크립트 실행
 
 ```bash
+$ cd scripts
 $ ./install_docker-compse.sh
 ```
 
@@ -80,6 +81,7 @@ $ ./install_docker-compse.sh
 ```bash
 $ cd database
 $ docker-compose up -d --build
+# 미리 생성해둔 데이터 베이스 스키마 적용하기
 $ docker exec -i main_master_db mysql -u root -p Iz0ne!!!! < friday.sql
 ```
 

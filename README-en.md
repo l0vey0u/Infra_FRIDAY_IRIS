@@ -57,29 +57,34 @@ This program consists of several  services that interact each other
 
 2. Docker Compose Installation (Don't need at already installed)
 
+```bash
+$ cd scripts
+$ ./install_docker-compse.sh
+```
+
 ## Technique Used
-
-### Server(back-end)
-
- -  Nginx 
- -  uWSGI
- -  MYSQL
 
 ### front-end
 
  -  Flask
  -  SQLAlchemy
- 
-### Deep Learning
- -  Further scheduled
+
+### Database
+
+ - Mysql ( >= 8.0)
+
+### Load balancer
+
+ - HA Proxy
 
 ## Installation Process
 
-1. Database 구축
+1. Compose Database
 
 ```bash
 $ cd database
 $ docker-compose up -d --build
+# Load Database Scheme
 $ docker exec -i main_master_db mysql -u root -p Iz0ne!!!! < friday.sql
 ```
 
