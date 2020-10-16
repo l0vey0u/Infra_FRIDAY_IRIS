@@ -20,60 +20,60 @@
   <img src="https://github.com/osamhack2020/Infra_FRIDAY_IRIS/blob/main/team_logo.png" width="200" alt="team logo">
 </p>
 
-## 개발 배경
+## Prolog
 
-[![음식물 처리비용의 실태](https://i.ytimg.com/vi/g5WXqBOQYzc/original.jpg)](https://youtu.be/g5WXqBOQYzc)
+[![Food Waste Disposal Costs Problem](https://img.youtube.com/vi/nciqfJ8wz0g/0.jpg)](https://www.youtube.com/watch?v=nciqfJ8wz0g)
 
-많이 주문해서 돈이 많이 들고 넘치게 만들어서 잔반이 많아지고 그 많은 것을 처리하려고 돈이 또 많이 드는 이런 악순환 어디서 시작된 것일까?
+There is vicious circle at cafeteria
 
-주말 저녁, 병영 식당에 가보면 먹는 사람은 확연히 적은데 만들어져있는 밥은 평소와 변함이 없다.
+Overordering -> Over-food production -> A lot of leftover -> Excessive Food Waste Disposal Costs
 
-이로인해 **잔식**(배식대에 남은 음식)이 많이 발생한다.
+The number of people who eat dinner on weekends is greatly reduced, while food production remains unchanged.
 
-하지만 조리병은 공식 식수인원(총원 - 휴가자, 출타자, .... )에 맞게 조리했을 뿐이다.
+This leads to a lot of leftovers.
 
-실제로 섭취하는 인원 수를 제대로 계산하면 해결할 수 있지 않을까?
+However, the chef cooked according to the number of people scheduled for the official dinner.
 
-식수 인원이 매일 다른 일반 식당과 달리 병영식당과 같은 단체급식소는 **일정한 식수인원의 패턴**만 알아낸다면 효과적인 예측이 가능하다.
-이를 실현하기 위해 여러 서비스를 만들고 각 서비스 간의 유기적인 연결을 통해 능동적인 분석 및 예측을 하게 하였다. 
+To solve this problem, let's find out how many people are actually going to eat dinner using DeepLearning.
 
-## 기능 설계
+Predictions will be effective if only certain patterns are found in cafeteria
+
+This program consists of several  services that interact each other
+
+## Functional Design
 
 ### Database
 ![HA-Database-Infra](https://drive.google.com/uc?export=download&id=1C9Wra6ZUjt2nFJY5dSKY6zYqQoIZ_dBM)
 
-## 컴퓨터 구성 / 필수 조건 안내 (Prerequisites)
+## Prerequisites
 
-* Docker Engine 버젼 19.03 이상 
-* Docker Compose 버젼 1.27.4 이상
+* Docker Engine version >= 19.03
+* Docker Compose version >= 1.27.4
 
-1. Docker 미 설치 시 해당 글을 참고하여 설치
+1. Install docker follow below posts depends on your os
 
 - ["Install Docker at ubuntu 20.04"](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04)
 - ["Install Docker at Windows 10"](https://www.wsgvet.com/ubuntu/180?sfl=wr_subject%7C%7Cwr_content&stx=NAS&sst=wr_hit&sod=desc&sop=and&page=1)
 
-2. Docker Compose 미 설치시 해당 스크립트 실행
+2. Docker Compose Installation (Don't need at already installed)
 
-```bash
-$ ./install_docker-compse.sh
-```
+## Technique Used
 
-## 기술 스택 (Technique Used)
+### Server(back-end)
+
+ -  Nginx 
+ -  uWSGI
+ -  MYSQL
 
 ### front-end
 
  -  Flask
  -  SQLAlchemy
+ 
+### Deep Learning
+ -  Further scheduled
 
-### Database
-
- - Mysql ( >= 8.0)
-
-### Load balancer
-
- - HA Proxy
-
-## 설치 안내 (Installation Process)
+## Installation Process
 
 1. Database 구축
 
@@ -83,16 +83,16 @@ $ docker-compose up -d --build
 $ docker exec -i main_master_db mysql -u root -p Iz0ne!!!! < friday.sql
 ```
 
-## 프로젝트 사용법 (Getting Started)
+## Getting Started
 
-- 추후 추가 예정
+- Further scheduled
 
-## 팀 정보 (Team Information)
+## Team Information
 
 - Pyo Sehun (kimpyo9357@naver.com), Github Id: kohari0912
 - Jeong Deokho (duckhoim@naver.com), Github Id: l0vey0u
 
-## 저작권 및 사용권 정보 (Copyleft / End User License)
+## Copyleft / End User License
 
 ### License
 
