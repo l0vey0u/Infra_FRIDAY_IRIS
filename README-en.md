@@ -81,6 +81,8 @@ $ ./install_docker-compse.sh
 
 1. Compose Database
 
+IF you use wsl or codespace, checkout branch to wsl or codespace
+
 ```bash
 $ cd database
 $ docker-compose up -d --build
