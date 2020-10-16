@@ -78,6 +78,8 @@ $ ./install_docker-compse.sh
 
 1. Database 구축
 
+사용될 환경이 WSL 또는 Codespace일 경우 해당 브랜치의 파일로 작업하시면 됩니다.
+
 ```bash
 $ cd database
 $ docker-compose up -d --build
